@@ -1,0 +1,3 @@
+rootProject.name='sample-posts'
+include ':app'
+include ':core'
