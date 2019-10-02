@@ -1,6 +1,7 @@
 package com.kkalfas.sample.posts.data
 
-import com.kkalfas.sample.core.*
+import com.kkalfas.sample.core.Either
+import com.kkalfas.sample.core.Failure
 
 interface PostsRepository {
     suspend fun getAllPosts() : Either<Failure, List<Post>>

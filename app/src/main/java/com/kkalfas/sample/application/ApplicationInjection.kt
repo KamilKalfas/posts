@@ -2,10 +2,14 @@ package com.kkalfas.sample.application
 
 import android.app.Application
 import android.content.Context
+import androidx.room.Room
 import com.kkalfas.sample.core.AppDispatcherProvider
 import com.kkalfas.sample.core.ApplicationScope
 import com.kkalfas.sample.core.NetworkModule
+import com.kkalfas.sample.database.PostsAppDatabase
+import com.kkalfas.sample.database.PostsDao
 import com.kkalfas.sample.posts.di.PostsActivityBuilder
+import com.kkalfas.sample.postsdetails.di.PostDetailsActivityBuilder
 import com.kkalfas.sample.users.di.UserModule
 import dagger.*
 import dagger.android.AndroidInjector
@@ -20,6 +24,7 @@ import javax.inject.Singleton
         ApplicationModule::class,
         NetworkModule::class,
         PostsActivityBuilder::class,
+        PostDetailsActivityBuilder::class,
         UserModule::class
     ]
 )
@@ -47,6 +52,22 @@ object ApplicationModule {
         main = Dispatchers.Main,
         io = Dispatchers.IO
     )
+
+    @JvmStatic
+    @Provides
+    fun provideDatabase(context: Context): PostsAppDatabase {
+        return Room.databaseBuilder(
+            context.applicationContext,
+            PostsAppDatabase::class.java,
+            PostsAppDatabase.NAME
+        ).build()
+    }
+
+    @JvmStatic
+    @Provides
+    fun providePostDetailsDao(postDetailsDatabase: PostsAppDatabase): PostsDao {
+        return postDetailsDatabase.dao()
+    }
 }
 
 @Module

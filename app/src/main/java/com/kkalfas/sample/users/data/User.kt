@@ -1,7 +1,11 @@
 package com.kkalfas.sample.users.data
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class User(
-    val id: Int,
+    @PrimaryKey val id: Int,
     val name: String,
     val email: String
 )

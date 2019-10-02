@@ -2,17 +2,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.kkalfas.sample.posts">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name="com.kkalfas.sample.application.PostsApplication"
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".presentation.PostsActivity">
             <intent-filter>
@@ -20,5 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.kkalfas.sample.postsdetails.presentation.PostDetailsActivity"
+            android:parentActivityName=".presentation.PostsActivity" />
     </application>
 </manifest>

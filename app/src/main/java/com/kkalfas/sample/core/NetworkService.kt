@@ -1,14 +1,13 @@
 package com.kkalfas.sample.core
 
 import com.kkalfas.sample.posts.data.Post
+import com.kkalfas.sample.postsdetails.data.Comment
 import com.kkalfas.sample.users.data.User
-import retrofit2.Retrofit
-import retrofit2.http.GET
-import retrofit2.http.Path
 
 interface NetworkService {
     suspend fun getPosts(): Either<Failure, List<Post>>
     suspend fun getUser(userId: Int): Either<Failure, User>
+    suspend fun getComments(postId: Int): Either<Failure, List<Comment>>
 
     class Impl(
         private val api: Api
@@ -20,6 +19,10 @@ interface NetworkService {
 
         override suspend fun getUser(userId: Int): Either<Failure, User> {
             return execute { api.getUserAsync(userId) }
+        }
+
+        override suspend fun getComments(postId: Int): Either<Failure, List<Comment>> {
+            return execute { api.getCommentsAsync(postId) }
         }
 
         private inline fun <reified T : Any> execute(block: () -> T): Either<Failure, T> {
