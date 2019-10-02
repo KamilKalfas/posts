@@ -30,7 +30,5 @@ fun <T, L, R> Either<L, R>.flatMap(fn: (R) -> Either<L, T>): Either<L, T> =
 
 
 sealed class Failure {
-    object NetworkConnection : Failure()
     object ServerError : Failure()
-    data class Exception(val error: Throwable) : Failure()
 }

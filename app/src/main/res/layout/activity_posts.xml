@@ -10,27 +10,43 @@
             type="com.kkalfas.sample.posts.presentation.PostsViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:snackbarCallback="@{viewModel}"
+        app:snackbarErrorMessage="@{viewModel.state.errorMessage}">
 
-        <include layout="@layout/include_loading_view"
-            android:id="@+id/activity_posts_loading_view"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:visibility="@{viewModel.state.loadingVisibility}"
-            tools:visibility="visible"/>
+            app:isRefreshing="@{viewModel.state.isRefreshing}"
+            app:onRefreshListener="@{viewModel::onClick}">
 
-        <include layout="@layout/include_posts_view"
-            android:id="@+id/activity_posts_view"
-            android:visibility="@{viewModel.state.postsVisibility}"
-            tools:viewModel="@{viewModel}"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <include
+                    android:id="@+id/activity_posts_loading_view"
+                    layout="@layout/include_loading_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="@{viewModel.state.loadingVisibility}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible" />
+
+                <include
+                    android:id="@+id/activity_posts_view"
+                    layout="@layout/include_posts_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="@{viewModel.state.postsVisibility}"
+                    tools:viewModel="@{viewModel}" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
