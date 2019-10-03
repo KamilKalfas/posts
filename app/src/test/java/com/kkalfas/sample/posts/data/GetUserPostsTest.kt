@@ -42,7 +42,6 @@ class GetUserPostsTest : MockkTest() {
         listOfUserPosts.forEachIndexed { index, userPost ->
             assertThat(userPost.userId).isEqualTo(users[index].b.id)
             assertThat(userPost.userName).isEqualTo(users[index].b.name)
-            assertThat(userPost.userEmail).isEqualTo(users[index].b.email)
             assertThat(userPost.postTitle).isEqualTo(posts[index].title)
             assertThat(userPost.postBody).isEqualTo(posts[index].body)
         }
@@ -87,7 +86,6 @@ class GetUserPostsTest : MockkTest() {
         assertThat(listOfUserPosts).hasSize(1)
         val user1 = (usersResult[0] as Either.Right).b
         assertThat(listOfUserPosts[0].userId).isEqualTo(user1.id)
-        assertThat(listOfUserPosts[0].userEmail).isEqualTo(user1.email)
         assertThat(listOfUserPosts[0].userName).isEqualTo(user1.name)
         assertThat(listOfUserPosts[0].postTitle).isEqualTo(posts[0].title)
         assertThat(listOfUserPosts[0].postBody).isEqualTo(posts[0].body)

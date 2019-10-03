@@ -1,5 +1,6 @@
 package com.kkalfas.sample.users.di
 
+import com.kkalfas.sample.core.CacheManager
 import com.kkalfas.sample.core.NetworkService
 import com.kkalfas.sample.core.UseCase
 import com.kkalfas.sample.database.PostsDao
@@ -9,6 +10,7 @@ import com.kkalfas.sample.users.data.UserDataSource
 import com.kkalfas.sample.users.data.UserRepository
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
 
 @Module
 object UserModule {
@@ -27,16 +29,31 @@ object UserModule {
 
     @JvmStatic
     @Provides
-    fun providesUserDataSourceFactory(userDataSource: UserDataSource): UserDataSource.Factory {
-        return UserDataSource.Factory.Impl(userDataSource)
+    fun providesUserDataSourceFactory(
+        @Named("cloud") cloudDataSource: UserDataSource,
+        @Named("db") dbDataSource: UserDataSource,
+        cacheManager: CacheManager
+        ): UserDataSource.Factory {
+        return UserDataSource.Factory.Impl(cloudDataSource, dbDataSource, cacheManager)
     }
 
     @JvmStatic
     @Provides
+    @Named("cloud")
     fun providesCloudUserDataSource(
         networkService: NetworkService,
+        postsDao: PostsDao,
+        cacheManager: CacheManager
+    ): UserDataSource {
+        return UserDataSource.Cloud(networkService, postsDao, cacheManager)
+    }
+
+    @JvmStatic
+    @Provides
+    @Named("db")
+    fun providesDbUserDataSource(
         postsDao: PostsDao
     ): UserDataSource {
-        return UserDataSource.Cloud(networkService, postsDao)
+        return UserDataSource.Db(postsDao)
     }
 }

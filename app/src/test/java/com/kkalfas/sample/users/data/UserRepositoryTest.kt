@@ -1,6 +1,7 @@
 package com.kkalfas.sample.users.data
 
 import com.kkalfas.sample.MockkTest
+import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.verify
@@ -16,11 +17,11 @@ class UserRepositoryTest : MockkTest() {
     @Test
     fun `getUserById calls dataSource and passes userId`() {
         val userId = 1
-        every { factory.create() } returns dataSource
+        coEvery { factory.create() } returns dataSource
 
         runBlocking { subject.getUserByI(userId) }
 
         coVerify { dataSource.getUser(userId) }
-        verify { factory.create() }
+        coVerify { factory.create() }
     }
 }

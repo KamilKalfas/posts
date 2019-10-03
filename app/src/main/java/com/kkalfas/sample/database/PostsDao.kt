@@ -15,17 +15,29 @@ abstract class PostsDao {
     abstract suspend fun insertUser(user: User)
 
     @Query("SELECT * FROM User WHERE User.id = :userId")
-    abstract suspend fun getUser(userId: Int) : User
+    abstract suspend fun getUser(userId: Int): User?
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract suspend fun insertPosts(posts: List<Post>)
 
     @Query("SELECT * FROM Post WHERE Post.id = :postId")
-    abstract suspend fun getPost(postId: Int) : Post
+    abstract suspend fun getPost(postId: Int): Post
+
+    @Query("SELECT * FROM Post")
+    abstract suspend fun getPosts(): List<Post>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract suspend fun insertComments(comments: List<Comment>)
 
     @Query("SELECT COUNT(*) FROM Comment")
     abstract suspend fun commentsCount(): Int
+
+    @Query("SELECT COUNT(*) FROM Post")
+    abstract suspend fun postsCount(): Int
+
+    @Query("SELECT COUNT(*) FROM User")
+    abstract suspend fun userCount(): Int
+
+    @Query("SELECT * FROM Comment WHERE Comment.postId = :postId")
+    abstract fun getComments(postId: Int): List<Comment>
 }

@@ -7,13 +7,14 @@ interface PostDetailsRepository {
     suspend fun getPostDetails(postId: Int, userId: Int): Either<Failure, PostDetails>
 
     class Impl(
-        factory: PostDetailsDataSource.Factory
+        private val factory: PostDetailsDataSource.Factory
     ) : PostDetailsRepository {
 
-        private val dataSource by lazy { factory.create() }
-
-        override suspend fun getPostDetails(postId: Int, userId: Int): Either<Failure, PostDetails> {
-            return dataSource.getPostDetails(postId = postId, userId = userId)
+        override suspend fun getPostDetails(
+            postId: Int,
+            userId: Int
+        ): Either<Failure, PostDetails> {
+            return factory.create().getPostDetails(postId = postId, userId = userId)
         }
     }
 }

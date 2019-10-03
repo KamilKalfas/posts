@@ -1,6 +1,7 @@
 package com.kkalfas.sample.posts.data
 
 import com.kkalfas.sample.MockkTest
+import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.verify
@@ -15,12 +16,12 @@ class PostsRepositoryTest : MockkTest() {
 
     @Test
     fun `getAllPosts calls dataSource getPosts`() {
-        every { factory.create() } returns dataSource
+        coEvery{ factory.create() } returns dataSource
 
         runBlocking { subject.getAllPosts() }
         coVerify {
             dataSource.getPosts()
         }
-        verify { factory.create() }
+        coVerify { factory.create() }
     }
 }

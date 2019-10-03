@@ -2,6 +2,7 @@ package com.kkalfas.sample.postsdetails.di
 
 import androidx.lifecycle.ViewModel
 import com.kkalfas.sample.commonui.viewmodel.ViewModelFactoryModule
+import com.kkalfas.sample.core.CacheManager
 import com.kkalfas.sample.core.NetworkService
 import com.kkalfas.sample.core.UseCase
 import com.kkalfas.sample.database.PostsDao
@@ -14,6 +15,7 @@ import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 import dagger.multibindings.StringKey
+import javax.inject.Named
 
 @Module
 abstract class PostDetailsActivityBinds {
@@ -57,22 +59,37 @@ object PostDetailsActivityModule {
     @JvmStatic
     @Provides
     fun providePostDetailsDataSourceFactory(
-        dataSource: PostDetailsDataSource
+        @Named("cloud") cloudDataSource: PostDetailsDataSource,
+        @Named("db") dbSource: PostDetailsDataSource,
+        cacheManager: CacheManager
     ): PostDetailsDataSource.Factory {
-        return PostDetailsDataSource.Factory.Impl(dataSource)
+        return PostDetailsDataSource.Factory.Impl(
+            cloudDataSource, dbSource, cacheManager
+        )
     }
 
     @JvmStatic
     @Provides
-    fun providePostDetailsMapper() : PostDetailsMapper = PostDetailsMapper.Impl()
+    fun providePostDetailsMapper(): PostDetailsMapper = PostDetailsMapper.Impl()
 
     @JvmStatic
     @Provides
+    @Named("cloud")
     fun provideCloudPostDetailsDataSource(
         networkService: NetworkService,
         postsDao: PostsDao,
         postDetailsMapper: PostDetailsMapper
     ): PostDetailsDataSource {
         return PostDetailsDataSource.Cloud(networkService, postsDao, postDetailsMapper)
+    }
+
+    @JvmStatic
+    @Provides
+    @Named("db")
+    fun provideDbPostDetailsDataSource(
+        postsDao: PostsDao,
+        postDetailsMapper: PostDetailsMapper
+    ): PostDetailsDataSource {
+        return PostDetailsDataSource.Db(postsDao, postDetailsMapper)
     }
 }

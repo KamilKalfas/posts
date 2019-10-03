@@ -40,15 +40,15 @@ class UserPostsAdapterTest : MockkTest() {
     fun `areItemsTheSame returns true when items are not equal`() {
         val userPost1 = UserPost(
             userId = 1,
+            postId = 12,
             userName = "user1",
-            userEmail = "user@mail",
             postTitle = "title",
             postBody = "body"
         )
         val userPost2 = UserPost(
             userId = 2,
+            postId = 3,
             userName = "user1",
-            userEmail = "user@mail",
             postTitle = "title",
             postBody = "body"
         )
@@ -59,8 +59,8 @@ class UserPostsAdapterTest : MockkTest() {
     fun `areItemsTheSame returns false when items are same`() {
         val userPost1 = UserPost(
             userId = 1,
+            postId = 12,
             userName = "user1",
-            userEmail = "user@mail",
             postTitle = "title",
             postBody = "body"
         )

@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.room.Room
 import com.kkalfas.sample.core.AppDispatcherProvider
 import com.kkalfas.sample.core.ApplicationScope
+import com.kkalfas.sample.core.CacheManager
 import com.kkalfas.sample.core.NetworkModule
 import com.kkalfas.sample.database.PostsAppDatabase
 import com.kkalfas.sample.database.PostsDao
@@ -68,6 +69,13 @@ object ApplicationModule {
     @Singleton
     fun providePostDetailsDao(postDetailsDatabase: PostsAppDatabase): PostsDao {
         return postDetailsDatabase.dao()
+    }
+
+    @JvmStatic
+    @Provides
+    @Singleton
+    fun provideCacheManager(postsDao: PostsDao) : CacheManager {
+        return CacheManager.Impl(postsDao)
     }
 }
 
