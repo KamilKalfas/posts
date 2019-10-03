@@ -1,8 +1,8 @@
 package com.kkalfas.sample.posts.data
 
 data class UserPost(
-    val userId: Int,
     val postId: Int,
+    val userId: Int,
     val userName: String,
     val postTitle: String,
     val postBody: String

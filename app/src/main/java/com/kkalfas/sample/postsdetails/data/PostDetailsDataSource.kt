@@ -7,7 +7,7 @@ import com.kkalfas.sample.core.NetworkService
 import com.kkalfas.sample.database.PostsDao
 
 interface PostDetailsDataSource {
-    suspend fun getPostDetails(userId: Int, postId: Int): Either<Failure, PostDetails>
+    suspend fun getPostDetails(postId: Int, userId: Int): Either<Failure, PostDetails>
 
     interface Factory {
         fun create(): PostDetailsDataSource
@@ -27,8 +27,8 @@ interface PostDetailsDataSource {
         private val postDetailsMapper: PostDetailsMapper
     ) : PostDetailsDataSource {
         override suspend fun getPostDetails(
-            userId: Int,
-            postId: Int
+            postId: Int,
+            userId: Int
         ): Either<Failure, PostDetails> {
             val comments = networkService.getComments(postId)
             return try {

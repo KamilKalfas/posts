@@ -3,4 +3,5 @@
     <string name="retry">RETRY</string>
     <string name="error_message_server">Sorry an server error occurred try again!</string>
     <string name="error_message_db">Sorry an could not load data. Try again!</string>
+    <string name="post_details_posted_by">Posted by : %s</string>
 </resources>

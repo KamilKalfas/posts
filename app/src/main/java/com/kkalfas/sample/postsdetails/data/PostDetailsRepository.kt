@@ -13,7 +13,7 @@ interface PostDetailsRepository {
         private val dataSource by lazy { factory.create() }
 
         override suspend fun getPostDetails(postId: Int, userId: Int): Either<Failure, PostDetails> {
-            return dataSource.getPostDetails(postId, userId)
+            return dataSource.getPostDetails(postId = postId, userId = userId)
         }
     }
 }

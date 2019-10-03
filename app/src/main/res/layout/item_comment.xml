@@ -7,7 +7,10 @@
 
         <variable
             name="viewModel"
-            type="com.kkalfas.sample.posts.data.UserPost" />
+            type="com.kkalfas.sample.postsdetails.data.Comment" />
+        <variable
+            name="position"
+            type="String" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -37,64 +40,51 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_end="8dp" />
 
-            <ImageView
-                android:id="@+id/avatar_image"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
-                android:padding="4dp"
-                android:scaleType="centerCrop"
-                app:avatar="@{viewModel.userId}"
-                app:layout_constraintStart_toStartOf="@id/guideline_left"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/comment_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:text="@{viewModel.postTitle}"
+                android:text="@{viewModel.name}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="@color/colorPrimaryTextDefaultMaterialLight"
-                app:layout_constraintEnd_toEndOf="@id/guideline_right"
-                app:layout_constraintStart_toEndOf="@+id/avatar_image"
-                app:layout_constraintTop_toTopOf="@+id/avatar_image"
+                app:layout_constraintEnd_toStartOf="@+id/post_number"
+                app:layout_constraintStart_toEndOf="@+id/guideline_left"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="sunt aut facere repellat provident occaecati excepturi optio reprehenderit" />
 
             <TextView
-                android:id="@+id/post_body"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:id="@+id/post_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline_right"
+                android:text="@{position}"
+                tools:text="1"/>
+
+            <TextView
+                android:id="@+id/comment_body"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginBottom="4dp"
-                android:ellipsize="end"
-                android:maxLines="4"
-                android:minLines="1"
-                android:text="@{viewModel.postBody}"
+                android:text="@{viewModel.body}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="@color/colorSecondaryTextDefaultMaterialLight"
                 app:layout_constraintEnd_toEndOf="@id/guideline_right"
-                app:layout_constraintStart_toEndOf="@+id/avatar_image"
+                app:layout_constraintStart_toStartOf="@id/guideline_left"
                 app:layout_constraintTop_toBottomOf="@+id/comment_title"
-                app:layout_constraintBottom_toBottomOf="@id/user_name"
                 tools:text="quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto" />
 
             <TextView
-                android:id="@+id/user_name"
+                android:id="@+id/comment_posted_by"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:maxLines="2"
-                android:minLines="1"
-                android:text="@{viewModel.userName}"
-                android:gravity="bottom|center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:textColor="@color/colorPrimaryTextDefaultMaterialLight"
-                app:layout_constraintTop_toBottomOf="@id/avatar_image"
-                app:layout_constraintEnd_toEndOf="@id/avatar_image"
-                app:layout_constraintStart_toStartOf="@id/avatar_image"
-                tools:text="user name nam name name name" />
+                app:layout_constraintTop_toBottomOf="@id/comment_body"
+                app:layout_constraintStart_toStartOf="@id/guideline_left"
+                app:postedByFormattedText="@{viewModel.email}"
+                tools:text="Posted by : someone@mail.com" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

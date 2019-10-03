@@ -3,6 +3,7 @@ package com.kkalfas.sample.commonui
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
@@ -10,8 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import com.kkalfas.sample.posts.R
+import kotlin.math.max
 
 object BindingAdapters {
 
@@ -22,9 +25,25 @@ object BindingAdapters {
             ColorDrawable(ContextCompat.getColor(view.context, android.R.color.darker_gray))
         if (id != -1) {
             Glide.with(view.context)
-                .load("https://i.pravatar.cc/150?u=$id")
+                .load(PhotoUrlProvider.getAvatarUrl(id))
                 .placeholder(placeHolder)
                 .circleCrop()
+                .into(view)
+                .clearOnDetach()
+        } else {
+            view.setImageDrawable(placeHolder)
+        }
+    }
+
+    @BindingAdapter("backgroundImage")
+    @JvmStatic
+    fun backgroundImage(view: ImageView, url: String) {
+        val placeHolder =
+            ColorDrawable(ContextCompat.getColor(view.context, R.color.colorPrimaryDark))
+        if (url.isNotEmpty()) {
+            Glide.with(view.context)
+                .load(url)
+                .placeholder(placeHolder)
                 .into(view)
                 .clearOnDetach()
         } else {
@@ -73,5 +92,41 @@ object BindingAdapters {
     @BindingAdapter("isRefreshing")
     fun isRefreshing(view: SwipeRefreshLayout, isRefreshing: Boolean) {
         view.isRefreshing = isRefreshing
+    }
+
+    @JvmStatic
+    @BindingAdapter("postedByFormattedText")
+    fun postedByFormatter(view: TextView, text: String) {
+        if (text.isNotBlank()) {
+            view.text = view.context.resources.getString(R.string.post_details_posted_by, text)
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("addOnOffsetChangedListener")
+    fun addOnOffsetChangedListener(view: AppBarLayout, imageView: ImageView) {
+        val startAnimactionValue = 20
+        var avatarVisibility = true
+        var maxScrollRange = view.totalScrollRange
+        view.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            if (maxScrollRange == 0) {
+                maxScrollRange = appBarLayout.totalScrollRange
+            }
+            val percentage = Math.abs(verticalOffset) * 100 / maxScrollRange
+            if (percentage >= startAnimactionValue && avatarVisibility) {
+                avatarVisibility = false
+                imageView.animate()
+                    .scaleY(0F).scaleX(0F)
+                    .setDuration(200)
+                    .start()
+            }
+            if (percentage <= startAnimactionValue && !avatarVisibility) {
+                avatarVisibility = true
+                imageView.animate()
+                    .scaleY(1F).scaleX(1F)
+                    .setDuration(200)
+                    .start()
+            }
+        })
     }
 }

@@ -1,6 +1,7 @@
 package com.kkalfas.sample.postsdetails.presentation
 
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.kkalfas.sample.commonui.BaseActivity
@@ -30,5 +31,9 @@ class PostDetailsActivity : BaseActivity() {
         val postId = intent.getIntExtra(POST_ID_KEY, -1)
         val userId = intent.getIntExtra(USER_ID_KEY, -1)
         viewModel.load(postId, userId)
+    }
+
+    fun toolbarBackPressed(view: View) {
+        onBackPressed()
     }
 }

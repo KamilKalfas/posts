@@ -39,6 +39,10 @@ abstract class CommonAdapter<Type : Any> :
             dataBinding.setVariable(BR.viewModel, viewModel)
             dataBinding.executePendingBindings()
         }
+
+        fun <T> bindVariable(variableId: Int, variable: T) {
+            dataBinding.setVariable(variableId, variable)
+        }
     }
 
     private fun RecyclerView.Adapter<ViewHolder>.selfNotify(

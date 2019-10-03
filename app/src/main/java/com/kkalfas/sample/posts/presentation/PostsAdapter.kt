@@ -3,7 +3,9 @@ package com.kkalfas.sample.posts.presentation
 import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
-import com.kkalfas.sample.commonui.*
+import com.kkalfas.sample.commonui.CommonAdapter
+import com.kkalfas.sample.commonui.DataBinding
+import com.kkalfas.sample.commonui.LayoutInflaterProvider
 import com.kkalfas.sample.posts.R
 import com.kkalfas.sample.posts.data.UserPost
 import com.kkalfas.sample.postsdetails.presentation.POST_ID_KEY

@@ -54,6 +54,7 @@ object ApplicationModule {
 
     @JvmStatic
     @Provides
+    @Singleton
     fun provideDatabase(@ApplicationScope context: Context): PostsAppDatabase {
         return Room.databaseBuilder(
             context,
@@ -64,6 +65,7 @@ object ApplicationModule {
 
     @JvmStatic
     @Provides
+    @Singleton
     fun providePostDetailsDao(postDetailsDatabase: PostsAppDatabase): PostsDao {
         return postDetailsDatabase.dao()
     }
