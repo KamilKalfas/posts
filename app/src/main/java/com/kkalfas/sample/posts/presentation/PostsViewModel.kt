@@ -38,15 +38,17 @@ class PostsViewModel @Inject constructor(
         viewModelScope.launch(dispatcherProvider.io) {
             getUserPosts(Unit).either(
                 onSuccess = {
-                    state.value?.adapter?.items = it
-                    _viewState.postValue(
-                        state.value?.copy(
-                            loadingVisibility = View.GONE,
-                            postsVisibility = View.VISIBLE,
-                            isRefreshing = false,
-                            errorMessage = -1
+                    viewModelScope.launch(dispatcherProvider.main) {
+                        state.value?.adapter?.items = it
+                        _viewState.postValue(
+                            state.value?.copy(
+                                loadingVisibility = View.GONE,
+                                postsVisibility = View.VISIBLE,
+                                isRefreshing = false,
+                                errorMessage = -1
+                            )
                         )
-                    )
+                    }
                 },
                 onFailure = { onFailure(it) }
             )
@@ -56,7 +58,8 @@ class PostsViewModel @Inject constructor(
     override fun onClick(p0: View?) {
         _viewState.value = state.value?.copy(
             isRefreshing = true,
-            errorMessage = -1)
+            errorMessage = -1
+        )
         loadPost()
     }
 

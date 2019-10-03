@@ -14,7 +14,6 @@ import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import com.kkalfas.sample.posts.R
-import kotlin.math.max
 
 object BindingAdapters {
 

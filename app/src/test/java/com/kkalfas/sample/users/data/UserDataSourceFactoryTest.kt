@@ -3,6 +3,7 @@ package com.kkalfas.sample.users.data
 import com.kkalfas.sample.MockkTest
 import com.kkalfas.sample.core.CacheManager
 import com.kkalfas.sample.database.PostsDao
+import io.mockk.coEvery
 import io.mockk.coVerify
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
@@ -17,6 +18,8 @@ class UserDataSourceFactoryTest : MockkTest() {
 
     @Test
     fun `create when cacheManager has UsersSavedInDb then return db source`() {
+        coEvery { cacheManager.hasUsersSavedInDb() } returns true
+
         val dataSource = runBlocking { subject.create() }
 
         coVerify { cacheManager.hasUsersSavedInDb() }
@@ -25,6 +28,8 @@ class UserDataSourceFactoryTest : MockkTest() {
 
     @Test
     fun `create when cacheManager has no UsersSavedInDb then return cloud source`() {
+        coEvery { cacheManager.hasUsersSavedInDb() } returns false
+
         val dataSource = runBlocking { subject.create() }
 
         coVerify { cacheManager.hasUsersSavedInDb() }

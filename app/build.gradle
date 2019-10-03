@@ -23,6 +23,10 @@ android {
     dataBinding {
         enabled true
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 ext {
@@ -70,4 +74,5 @@ dependencies {
     testImplementation 'org.assertj:assertj-core:3.11.1'
     testImplementation 'io.mockk:mockk:1.9.3'
     testImplementation 'junit:junit:4.12'
+    testImplementation 'android.arch.core:core-testing:1.1.1'
 }

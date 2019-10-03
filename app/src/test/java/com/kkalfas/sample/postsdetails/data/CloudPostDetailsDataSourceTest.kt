@@ -79,10 +79,10 @@ class CloudPostDetailsDataSourceTest : MockkTest() {
     }
 
     @Test
-    fun `getPostDetails when getComments throws Exception then call networkService getComments which fails then return left`() {
+    fun `getPostDetails when getComments returns emptyList then call networkService getComments which fails then return left`() {
         coEvery { postsDao.getUser(userId) } returns mockk()
         coEvery { postsDao.getPost(postId) } returns mockk()
-        coEvery { postsDao.getComments(postId) } throws Exception()
+        coEvery { postsDao.getComments(postId) } returns emptyList()
         coEvery { networkService.getComments(postId) } throws Exception()
 
         val result = runBlocking { subject.getPostDetails(postId, userId) }

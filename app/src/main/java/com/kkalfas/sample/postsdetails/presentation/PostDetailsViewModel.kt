@@ -6,14 +6,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kkalfas.sample.commonui.PhotoUrlProvider
+import com.kkalfas.sample.core.AppDispatcherProvider
 import com.kkalfas.sample.core.UseCase
 import com.kkalfas.sample.postsdetails.data.GetPostsDetails
 import com.kkalfas.sample.postsdetails.data.PostDetails
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class PostDetailsViewModel @Inject constructor(
     adapter: CommentsAdapter,
+    private val dispatcherProvider: AppDispatcherProvider,
     private val getPostsDetails: @JvmSuppressWildcards UseCase<GetPostsDetails.Params, PostDetails>
 ) : ViewModel() {
 
@@ -30,6 +33,7 @@ class PostDetailsViewModel @Inject constructor(
     private val _viewState = MutableLiveData<ViewState>().apply {
         value = ViewState(adapter = adapter)
     }
+
     val state: LiveData<ViewState>
         get() = _viewState
 
@@ -39,20 +43,24 @@ class PostDetailsViewModel @Inject constructor(
                 backgroundUrl = PhotoUrlProvider.getDetailsPhotoUrl(postId),
                 userId = userId
             )
-            viewModelScope.launch {
+            viewModelScope.launch(dispatcherProvider.io) {
                 getPostsDetails(GetPostsDetails.Params(postId = postId, userId = userId)).either(
                     onSuccess = {
-                        state.value?.adapter?.items = it.comments
-                        _viewState.postValue(
-                            state.value?.copy(
-                                email = it.email,
-                                body = it.body,
-                                title = it.title,
-                                username = it.username
+                        viewModelScope.launch(dispatcherProvider.main) {
+                            state.value?.adapter?.items = it.comments
+                            _viewState.postValue(
+                                state.value?.copy(
+                                    email = it.email,
+                                    body = it.body,
+                                    title = it.title,
+                                    username = it.username
+                                )
                             )
-                        )
+                        }
                     },
-                    onFailure = { Log.d("PostDetailsViewMode:onFailure", it.toString()) }
+                    onFailure = {
+                        Log.d("PostDetailsViewMode:onFailure", it.toString())
+                    }
                 )
             }
         }

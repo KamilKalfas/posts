@@ -40,12 +40,9 @@ interface PostDetailsDataSource {
                 if (user == null) Either.Left(DatabaseFailure)
                 else {
                     val post = postsDao.getPost(postId)
-                    val comments = try {
-                        Either.Right(postsDao.getComments(postId))
-                    } catch (e: java.lang.Exception) {
-                        e.printStackTrace()
-                        networkService.getComments(postId)
-                    }
+                    val dbComments = postsDao.getComments(postId)
+                    val comments = if (dbComments.isEmpty()) networkService.getComments(postId)
+                    else Either.Right(dbComments)
                     postDetailsMapper.map(comments, post, user)
                 }
             } catch (e: Exception) {
