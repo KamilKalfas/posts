@@ -1,5 +1,6 @@
 package com.kkalfas.sample.commonui
 
+import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -10,9 +11,14 @@ interface DiffUtilCompareCallback<Type> {
     fun areItemsTheSame(t1: Type, t2: Type): Boolean
 }
 
+interface ItemClickedCallback<Type> {
+    fun onItemClick(view: View, item: Type)
+}
+
 abstract class CommonAdapter<Type : Any> :
-    RecyclerView.Adapter<CommonAdapter.ViewHolder>(),
-    DiffUtilCompareCallback<Type> {
+    RecyclerView.Adapter<CommonAdapter<Type>.ViewHolder>(),
+    DiffUtilCompareCallback<Type>,
+    ItemClickedCallback<Type> {
 
     var items: List<Type> by Delegates.observable(emptyList()) { _, old, new ->
         selfNotify(old, new, this)
@@ -24,10 +30,14 @@ abstract class CommonAdapter<Type : Any> :
         holder.bind(items[position])
     }
 
-    class ViewHolder(private val dataBinding: ViewDataBinding) : RecyclerView.ViewHolder(dataBinding.root) {
-        fun <VM> bind(viewModel: VM) {
-            this.dataBinding.setVariable(BR.viewModel, viewModel)
-            this.dataBinding.executePendingBindings()
+    inner class ViewHolder(private val dataBinding: ViewDataBinding) :
+        RecyclerView.ViewHolder(dataBinding.root) {
+        fun bind(viewModel: Type) {
+            dataBinding.root.setOnClickListener {
+                onItemClick(it, viewModel)
+            }
+            dataBinding.setVariable(BR.viewModel, viewModel)
+            dataBinding.executePendingBindings()
         }
     }
 

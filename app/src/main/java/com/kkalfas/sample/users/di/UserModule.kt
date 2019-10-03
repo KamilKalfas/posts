@@ -2,6 +2,7 @@ package com.kkalfas.sample.users.di
 
 import com.kkalfas.sample.core.NetworkService
 import com.kkalfas.sample.core.UseCase
+import com.kkalfas.sample.database.PostsDao
 import com.kkalfas.sample.users.data.GetUser
 import com.kkalfas.sample.users.data.User
 import com.kkalfas.sample.users.data.UserDataSource
@@ -32,7 +33,10 @@ object UserModule {
 
     @JvmStatic
     @Provides
-    fun providesCloudUserDataSource(networkService: NetworkService): UserDataSource {
-        return UserDataSource.Cloud(networkService)
+    fun providesCloudUserDataSource(
+        networkService: NetworkService,
+        postsDao: PostsDao
+    ): UserDataSource {
+        return UserDataSource.Cloud(networkService, postsDao)
     }
 }

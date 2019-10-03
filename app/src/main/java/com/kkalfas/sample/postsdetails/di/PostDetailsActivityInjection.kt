@@ -4,10 +4,8 @@ import androidx.lifecycle.ViewModel
 import com.kkalfas.sample.commonui.viewmodel.ViewModelFactoryModule
 import com.kkalfas.sample.core.NetworkService
 import com.kkalfas.sample.core.UseCase
-import com.kkalfas.sample.postsdetails.data.GetPostsDetails
-import com.kkalfas.sample.postsdetails.data.PostDetails
-import com.kkalfas.sample.postsdetails.data.PostDetailsDataSource
-import com.kkalfas.sample.postsdetails.data.PostDetailsRepository
+import com.kkalfas.sample.database.PostsDao
+import com.kkalfas.sample.postsdetails.data.*
 import com.kkalfas.sample.postsdetails.presentation.PostDetailsActivity
 import com.kkalfas.sample.postsdetails.presentation.PostDetailsViewModel
 import dagger.Binds
@@ -52,7 +50,7 @@ object PostDetailsActivityModule {
     @Provides
     fun providePostDetailsRepository(
         factory: PostDetailsDataSource.Factory
-    ) : PostDetailsRepository {
+    ): PostDetailsRepository {
         return PostDetailsRepository.Impl(factory)
     }
 
@@ -60,15 +58,21 @@ object PostDetailsActivityModule {
     @Provides
     fun providePostDetailsDataSourceFactory(
         dataSource: PostDetailsDataSource
-    ) : PostDetailsDataSource.Factory {
+    ): PostDetailsDataSource.Factory {
         return PostDetailsDataSource.Factory.Impl(dataSource)
     }
 
     @JvmStatic
     @Provides
+    fun providePostDetailsMapper() : PostDetailsMapper = PostDetailsMapper.Impl()
+
+    @JvmStatic
+    @Provides
     fun provideCloudPostDetailsDataSource(
-        networkService: NetworkService
-    ) : PostDetailsDataSource {
-        return PostDetailsDataSource.Cloud(networkService)
+        networkService: NetworkService,
+        postsDao: PostsDao,
+        postDetailsMapper: PostDetailsMapper
+    ): PostDetailsDataSource {
+        return PostDetailsDataSource.Cloud(networkService, postsDao, postDetailsMapper)
     }
 }

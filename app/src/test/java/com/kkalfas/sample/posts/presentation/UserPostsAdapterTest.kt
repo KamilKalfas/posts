@@ -17,7 +17,7 @@ class UserPostsAdapterTest : MockkTest() {
 
     private val layoutInflaterProvider: LayoutInflaterProvider = mockk()
     private val dataBinding: DataBinding = mockk()
-    private val subject = UserPostsAdapter(layoutInflaterProvider, dataBinding)
+    private val subject = PostsAdapter(layoutInflaterProvider, dataBinding)
 
     @Test
     fun `onCreateViewHolder creates view holder with item_user_post layout`() {

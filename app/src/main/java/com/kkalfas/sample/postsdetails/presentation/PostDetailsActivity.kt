@@ -8,6 +8,9 @@ import com.kkalfas.sample.posts.R
 import com.kkalfas.sample.posts.databinding.ActivityPostDetailsBinding
 import javax.inject.Inject
 
+const val POST_ID_KEY = "PostDetailsActivity_postIdKey"
+const val USER_ID_KEY = "PostDetailsActivity_userIdKey"
+
 class PostDetailsActivity : BaseActivity() {
     override val layoutId = R.layout.activity_post_details
 
@@ -23,5 +26,9 @@ class PostDetailsActivity : BaseActivity() {
         val binding: ActivityPostDetailsBinding = bind()
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        val postId = intent.getIntExtra(POST_ID_KEY, -1)
+        val userId = intent.getIntExtra(USER_ID_KEY, -1)
+        viewModel.load(postId, userId)
     }
 }

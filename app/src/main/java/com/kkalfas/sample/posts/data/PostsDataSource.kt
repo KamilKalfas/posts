@@ -3,6 +3,7 @@ package com.kkalfas.sample.posts.data
 import com.kkalfas.sample.core.Either
 import com.kkalfas.sample.core.Failure
 import com.kkalfas.sample.core.NetworkService
+import com.kkalfas.sample.database.PostsDao
 
 interface PostsDataSource {
     suspend fun getPosts(): Either<Failure, List<Post>>
@@ -21,11 +22,18 @@ interface PostsDataSource {
     }
 
     class Cloud(
-        private val networkService: NetworkService
+        private val networkService: NetworkService,
+        private val postsDao: PostsDao
     ) : PostsDataSource {
 
         override suspend fun getPosts(): Either<Failure, List<Post>> {
-            return networkService.getPosts()
+            return when (val result = networkService.getPosts()) {
+                is Either.Left -> result
+                is Either.Right -> {
+                    postsDao.insertPosts(posts = result.b)
+                    result
+                }
+            }
         }
     }
 }

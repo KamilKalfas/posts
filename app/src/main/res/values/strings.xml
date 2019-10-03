@@ -2,4 +2,5 @@
     <string name="app_name">Sample Posts</string>
     <string name="retry">RETRY</string>
     <string name="error_message_server">Sorry an server error occurred try again!</string>
+    <string name="error_message_db">Sorry an could not load data. Try again!</string>
 </resources>

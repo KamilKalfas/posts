@@ -9,8 +9,8 @@ class GetPostsDetails(
 ) : UseCase<GetPostsDetails.Params, PostDetails> {
 
     override suspend fun invoke(params: Params): Either<Failure, PostDetails> {
-        return repository.getPostDetails(params.postId)
+        return repository.getPostDetails(params.postId, params.userId)
     }
 
-    data class Params(val postId: Int)
+    data class Params(val postId: Int, val userId: Int)
 }

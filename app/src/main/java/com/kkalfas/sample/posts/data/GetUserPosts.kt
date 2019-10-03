@@ -25,9 +25,9 @@ class GetUserPosts(
         return when (val user = getUser(GetUser.Params(post.userId))) {
             is Either.Left -> UserPost.Empty
             is Either.Right -> UserPost(
+                post.id,
                 user.b.id,
                 user.b.name,
-                user.b.email,
                 post.title,
                 post.body
             )

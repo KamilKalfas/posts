@@ -15,13 +15,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class PostsViewModel @Inject constructor(
-    adapter: UserPostsAdapter,
+    adapter: PostsAdapter,
     private val dispatcherProvider: AppDispatcherProvider,
     private val getUserPosts: @JvmSuppressWildcards UseCase<Unit, List<UserPost>>
 ) : ViewModel(), SnackbarActionCallback {
 
     data class ViewState(
-        val adapter: UserPostsAdapter,
+        val adapter: PostsAdapter,
         val loadingVisibility: Int,
         val postsVisibility: Int,
         val errorMessage: Int = -1,
@@ -63,6 +63,7 @@ class PostsViewModel @Inject constructor(
     private fun onFailure(failure: Failure) {
         val errorMessage = when (failure) {
             Failure.ServerError -> R.string.error_message_server
+            is Failure.FeatureFailure -> R.string.error_message_db
         }
         _viewState.postValue(
             state.value?.copy(

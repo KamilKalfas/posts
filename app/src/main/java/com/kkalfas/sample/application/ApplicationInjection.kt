@@ -44,7 +44,6 @@ object ApplicationModule {
     @ApplicationScope
     fun provideContext(application: PostsApplication): Context = application.applicationContext
 
-
     @JvmStatic
     @Provides
     @Singleton
@@ -55,9 +54,9 @@ object ApplicationModule {
 
     @JvmStatic
     @Provides
-    fun provideDatabase(context: Context): PostsAppDatabase {
+    fun provideDatabase(@ApplicationScope context: Context): PostsAppDatabase {
         return Room.databaseBuilder(
-            context.applicationContext,
+            context,
             PostsAppDatabase::class.java,
             PostsAppDatabase.NAME
         ).build()

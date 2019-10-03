@@ -31,4 +31,5 @@ fun <T, L, R> Either<L, R>.flatMap(fn: (R) -> Either<L, T>): Either<L, T> =
 
 sealed class Failure {
     object ServerError : Failure()
+    abstract class FeatureFailure : Failure()
 }

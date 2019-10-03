@@ -4,7 +4,7 @@ import com.kkalfas.sample.core.Either
 import com.kkalfas.sample.core.Failure
 
 interface PostDetailsRepository {
-    suspend fun getPostDetails(postId: Int): Either<Failure, PostDetails>
+    suspend fun getPostDetails(postId: Int, userId: Int): Either<Failure, PostDetails>
 
     class Impl(
         factory: PostDetailsDataSource.Factory
@@ -12,8 +12,8 @@ interface PostDetailsRepository {
 
         private val dataSource by lazy { factory.create() }
 
-        override suspend fun getPostDetails(postId: Int): Either<Failure, PostDetails> {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        override suspend fun getPostDetails(postId: Int, userId: Int): Either<Failure, PostDetails> {
+            return dataSource.getPostDetails(postId, userId)
         }
     }
 }
