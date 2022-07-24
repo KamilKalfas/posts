@@ -1,5 +1,6 @@
 package com.kkalfas.sample.core
 
+import com.kkalfas.sample.core.logger.TimberAdapter
 import com.kkalfas.sample.posts.data.Post
 import com.kkalfas.sample.postsdetails.data.Comment
 import com.kkalfas.sample.users.data.User
@@ -29,6 +30,7 @@ interface NetworkService {
             return try {
                 Either.Right(block())
             } catch (e: Exception) {
+                TimberAdapter.log("NetworkService#execute", e)
                 Either.Left(Failure.ServerError)
             }
         }
